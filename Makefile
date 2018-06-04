@@ -10,6 +10,7 @@ requirements:
 fastText:
 	git submodule sync --recursive
 	git submodule update --init --recursive
+	pip install Cython==0.27.3 pybind11==2.2.3
 	cd lib/fastText && python setup.py clean --all install
 
 model: fastText
