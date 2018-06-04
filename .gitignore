@@ -2,4 +2,5 @@
 supervised_models/*.bin
 
 tests/__pycache__/
+supervised_models/__pycache__/
 supervised_models/python/__pycache__/
