@@ -18,7 +18,7 @@ class TestSupervisedModels(unittest.TestCase):
         v = self.model.get_sentence_vector("murder")
 
         sim = cosine_sim(u, v)
-        self.assertAlmostEqual(sim, 0.8, 1)
+        self.assertGreater(sim, 0.8, "Similarity must be greater than 0.8")
 
     def test_embedding_vector(self):
         """
@@ -34,4 +34,4 @@ class TestSupervisedModels(unittest.TestCase):
 
         sim = cosine_sim(homicide, embedding_vector)
 
-        self.assertAlmostEqual(sim, 0.9, 1)
+        self.assertGreater(sim, 0.9, "Similarity must be greater than 0.9")
