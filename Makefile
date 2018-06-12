@@ -14,7 +14,7 @@ fastText:
 model: fastText
 	python build_model.py supervised_models/ons_labelled.txt supervised_models/ons_supervised.bin
 
-test: build
+test:
 	pip install -r requirements_test.txt
 	nosetests -s -v tests/
 
