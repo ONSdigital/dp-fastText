@@ -16,6 +16,27 @@ class Page(object):
         except KeyError:
             raise AttributeError
 
+    def to_docs(self) -> List[dict]:
+        """
+        Returns a document with fields [id] and [text]
+        :return:
+        """
+        from uuid import uuid1
+
+        docs = []
+
+        if self.has_description() and 'summary' in self.description:
+            fields = ['title', 'headline1', 'headline2', 'headline3', 'summary']
+
+            description = self.description
+
+            for field in fields:
+                if field in description:
+                    docs.append({'id': str(uuid1()), 'text': description[field]})
+
+            return docs
+        return docs
+
     def get_corpus_sentences(self) -> List[str]:
         """
         Combines several text fields into one long text corpus and processes the sentences

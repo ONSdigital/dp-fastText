@@ -19,9 +19,6 @@ def generate_labelled_corpus(pages: List[Page], prefix: str="__label__") -> List
             sentences = page.get_corpus_sentences()
             labels = " ".join(["%s%s" % (prefix, l) for l in page.get_labels()])
 
-            if labels == '__label__exportsimportscommoditiesvolumesmret':
-                print(page.description)
-
             for sentence in sentences:
                 line = "%s %s" % (labels, sentence)
                 lines.append(line)
