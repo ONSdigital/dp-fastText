@@ -1,6 +1,8 @@
 from typing import List
 from supervised_models.python.page import Page
 
+from tqdm import tqdm
+
 
 def markdown_to_text(md):
     import markdown
@@ -12,7 +14,7 @@ def markdown_to_text(md):
     return soup.text
 
 
-def generate_labelled_corpus(pages: List[Page], prefix: str="__label__") -> List[dict]:
+def generate_labelled_corpus(pages: List[Page], prefix: str="__label__") -> List[str]:
     lines = []
     for page in pages:
         if page.has_keywords():
@@ -30,6 +32,7 @@ def write_corpus(fname_prefix: str, complete_corpus: List[str], randomize: bool=
     Splits the corpus into training (.train) and validation (.valid) datasets
     """
     import numpy as np
+
     if randomize:
         import random
         random.shuffle(complete_corpus)
@@ -40,5 +43,5 @@ def write_corpus(fname_prefix: str, complete_corpus: List[str], randomize: bool=
 
     for suffix, corpus in zip(['train', 'valid'], [train_corpus, valid_corpus]):
         with open("%s.%s" % (fname_prefix, suffix), "w") as f:
-            for line in corpus:
+            for line in tqdm(corpus):
                 f.write("%s\n" % line)

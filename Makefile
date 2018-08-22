@@ -12,7 +12,7 @@ fastText:
 	cd lib/fastText && python setup.py install
 
 model: fastText
-	python build_model.py supervised_models/ons_labelled.txt supervised_models/ons_supervised.bin
+	python build_model.py corpa/ons_labelled.txt supervised_models/ons_supervised_d300.bin
 
 test:
 	pip install -r requirements_test.txt

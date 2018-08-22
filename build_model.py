@@ -20,7 +20,7 @@ def main(corpus_fname_prefix: str, model_out_fname:str, reader_type: str='mongo'
 
         write_corpus(corpus_fname_prefix, corpus, randomize=True)
 
-    model = train_model(corpus_fname_prefix, model_out_fname, label_prefix='__label__', dim=10, minCount=150, minCountLabel=50)
+    model = train_model(corpus_fname_prefix, model_out_fname, label_prefix='__label__', dim=300, minCount=100, minCountLabel=250)
 
     valid_fname = "%s.valid" % corpus_fname_prefix
     for k in [1, 5]:
