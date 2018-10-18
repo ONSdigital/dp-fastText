@@ -1,5 +1,6 @@
 tqdm==4.23.4
 gensim==3.4.0
+elasticsearch==6.3.0
 pymongo==3.7.1
 nltk==3.2.5
 Pygments==2.2.0
