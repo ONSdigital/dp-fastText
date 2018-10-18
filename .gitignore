@@ -5,6 +5,6 @@ backup_models/
 tests/__pycache__/
 tests/word_embedding/__pycache__/
 
-supervised_models/__pycache__/
+**/__pycache__/
 supervised_models/python/__pycache__/
 supervised_models/*.bin*
