@@ -12,4 +12,4 @@ inputs:
   - name: dp-fastText
 
 run:
-  path: dp-fastText/ci/scripts/unit.sh
+  path: dp-fasttext/ci/scripts/unit.sh

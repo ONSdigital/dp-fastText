@@ -15,4 +15,4 @@ outputs:
   - name: build
 
 run:
-  path: dp-fastText/ci/scripts/build.sh
+  path: dp-fasttext/ci/scripts/build.sh
