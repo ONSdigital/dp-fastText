@@ -1,5 +1,5 @@
 #!/bin/bash -eux
 
-pushd dp-fastText
-  make test
+pushd dp-fasttext
+#  make test
 popd

@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
-pushd dp-fastText
+pushd dp-fasttext
   make build
   cp -r * ../build/
 popd
