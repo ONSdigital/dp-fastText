@@ -2,6 +2,7 @@
 Trains the ONS fastText model by generating text corpa from ONS publications
 @author David Sullivan 01/06/18
 """
+from log import logging
 
 
 def train_model(fname_prefix: str, out_fname: str, label_prefix: str="__label__", **kwargs):
@@ -22,10 +23,12 @@ def train_model(fname_prefix: str, out_fname: str, label_prefix: str="__label__"
         "t": kwargs.get("t", 1e-5)
     }
 
-    print("Training fastText model...")
-    print("Params:", params)
+    logging.info("Training fastText model", extra={
+        "params": params
+    })
     model = fastText.train_supervised(input="%s.train" % fname_prefix, label=label_prefix, **params)
-    print("Saving...")
+    logging.info("Writing model to disk", extra = {
+        "output_file": out_fname
+    })
     model.save_model(out_fname)
-    print("Done")
     return model
