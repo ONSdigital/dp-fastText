@@ -9,7 +9,7 @@ image_resource:
     tag: 3.6
 
 inputs:
-  - name: dp-fastText
+  - name: dp-fasttext
 
 outputs:
   - name: build
