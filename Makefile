@@ -6,6 +6,7 @@ build: requirements model
 
 requirements:
 	pip install -r requirements.txt
+	pip install dp
 	mkdir -p supervised_models
 
 fastText:
