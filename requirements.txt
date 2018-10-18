@@ -8,6 +8,5 @@ Markdown==2.6.11
 setuptools==38.4.0
 typing==3.6.2
 beautifulsoup4==4.6.3
-fastText==0.8.3
 GitPython==2.1.11
 python_json_logger==0.1.9
