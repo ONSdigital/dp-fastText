@@ -14,7 +14,7 @@ fastText:
 	pip install fasttextmirror==0.8.22
 
 model: fastText
-	python build_model.py corpa/ons_labelled.txt supervised_models/ons_supervised.bin 300
+	python build_model.py corpa/ons_labelled.txt supervised_models/ons_supervised.bin 100
 
 test:
 	pip install -r requirements_test.txt
