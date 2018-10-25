@@ -4,7 +4,7 @@ Initialises APP wide logging config
 import os
 import logging
 from config import CONFIG
-from dp.log.config import config_for_formatter
+from dp4py.log.config import config_for_formatter
 
 from log.formatter import CustomJsonFormatter
 

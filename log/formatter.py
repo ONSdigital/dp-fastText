@@ -2,7 +2,7 @@
 Add namespace to all log messages
 """
 from config import CONFIG
-from dp.log.formatters import CustomJsonFormatter
+from dp4py.log.formatters import CustomJsonFormatter
 
 
 class CustomJsonFormatter(CustomJsonFormatter):
