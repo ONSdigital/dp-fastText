@@ -1,6 +1,6 @@
 import logging
-from dp.config.section import Section
-from dp.config.utils import git_sha, bool_env
+from dp4py.config.section import Section
+from dp4py.config.utils import git_sha, bool_env
 
 # APP Config
 
