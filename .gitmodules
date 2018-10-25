@@ -1,6 +1,0 @@
-[submodule "lib/fastText"]
-	path = lib/fastText
-	url = https://github.com/facebookresearch/fastText
-[submodule "dp4py"]
-	path = dp4py
-	url = git@github.com:ONSdigital/dp4py.git
