@@ -18,7 +18,7 @@ version:
 	python git_sha.py > app_version
 
 model: fastText
-	python build_model.py corpa/ons_labelled.txt supervised_models/ons_supervised.bin 100
+	python build_model.py corpa/ons_labelled.txt supervised_models/ons_supervised.bin 3
 
 test:
 	pip install -r requirements_test.txt
