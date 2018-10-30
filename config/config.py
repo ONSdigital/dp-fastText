@@ -1,17 +1,6 @@
-import logging
-from dp4py.config.section import Section
-from dp4py.config.utils import git_sha, bool_env
+from dp4py_config.section import Section
 
 # APP Config
 
 APP_CONFIG = Section("App config")
 APP_CONFIG.title = "dp-fastText"
-APP_CONFIG.version = git_sha()
-
-# Logging config
-
-LOGGING_CONFIG = Section("Logging config")
-LOGGING_CONFIG.default_level = logging.INFO
-LOGGING_CONFIG.coloured_logging = bool_env('COLOURED_LOGGING_ENABLED', False)
-LOGGING_CONFIG.pretty_logging = bool_env('PRETTY_LOGGING', False)
-LOGGING_CONFIG.json_logger_indent = 4 if LOGGING_CONFIG.pretty_logging else None

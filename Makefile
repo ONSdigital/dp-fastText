@@ -22,7 +22,7 @@ model: fastText
 
 test:
 	pip install -r requirements_test.txt
-	nosetests -s -v tests/
+	nosetests -s -v unit/
 
 clean:
 	cd lib/fastText && python setup.py clean --all

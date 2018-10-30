@@ -2,7 +2,7 @@
 Trains the ONS fastText model by generating text corpa from ONS publications
 @author David Sullivan 01/06/18
 """
-from log import logging
+import logging
 
 
 def train_model(fname_prefix: str, out_fname: str, label_prefix: str="__label__", **kwargs):

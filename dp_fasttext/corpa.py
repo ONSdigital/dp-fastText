@@ -1,5 +1,5 @@
 from typing import List
-from supervised_models.python.page import Page
+from dp_fasttext.page import Page
 
 from tqdm import tqdm
 

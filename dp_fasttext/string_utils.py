@@ -3,6 +3,7 @@ import gensim
 from typing import List
 
 from nltk.corpus import stopwords
+
 stops = stopwords.words("english")
 
 regex = re.compile('[^a-zA-Z\s]')

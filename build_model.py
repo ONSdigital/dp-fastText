@@ -1,12 +1,17 @@
 import sys
+import logging.config
 
-from log import logging
+from dp_fasttext.train import train_model
+from dp_fasttext.corpa import generate_labelled_corpus, write_corpus
 
-from supervised_models.python.train import train_model
-from supervised_models.python.corpa import generate_labelled_corpus, write_corpus
+# Import readerrs
+from dp_fasttext.mongo.mongo_reader import MongoReader
+from dp_fasttext.elasticsearch.elasticsearch_reader import ElasticsearchReader
 
-from supervised_models.python.mongo.mongo_reader import MongoReader
-from supervised_models.python.elasticsearch.elasticsearch_reader import ElasticsearchReader
+# Configure logging
+from dp4py_sanic.logging.log_config import log_config
+
+logging.config.dictConfig(log_config)
 
 
 def main(corpus_prefix: str, output_fname:str, ndim: int, reader: str= 'mongo'):
