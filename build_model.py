@@ -41,7 +41,7 @@ def main(corpus_prefix: str, output_fname:str, ndim: int, reader: str= 'mongo'):
 
         write_corpus(corpus_prefix, corpus, randomize=True)
 
-    model = train_model(corpus_prefix, output_fname, label_prefix='__label__', dim=ndim, minCount=25, minCountLabel=100,
+    model = train_model(corpus_prefix, output_fname, label_prefix='__label__', dim=ndim, minCount=500, minCountLabel=500,
                         verbose=1)
 
     valid_fname = "%s.valid" % corpus_prefix
