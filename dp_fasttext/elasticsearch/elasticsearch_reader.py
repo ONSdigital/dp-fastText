@@ -1,7 +1,7 @@
 from typing import List
 from elasticsearch import Elasticsearch
-from supervised_models.python.page import Page
-from supervised_models.python.reader import DocumentReader
+from dp_fasttext.page import Page
+from dp_fasttext.reader import DocumentReader
 
 
 def get_search_url() -> str:

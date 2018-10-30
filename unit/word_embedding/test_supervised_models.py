@@ -1,6 +1,6 @@
 import unittest
 import fastText
-from supervised_models.python.math_utils import cosine_sim, decode_float_list
+from dp_fasttext.math_utils import cosine_sim
 
 
 class TestSupervisedModels(unittest.TestCase):
