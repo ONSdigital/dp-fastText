@@ -1,7 +1,7 @@
 from typing import List
 from elasticsearch import Elasticsearch
-from dp_fasttext.page import Page
-from dp_fasttext.reader import DocumentReader
+from dp_fasttext.models.page import Page
+from dp_fasttext.readers.reader import DocumentReader
 
 
 def get_search_url() -> str:

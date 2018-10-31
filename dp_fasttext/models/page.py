@@ -42,7 +42,7 @@ class Page(object):
         Combines several text fields into one long text corpus and processes the sentences
         :return:
         """
-        from dp_fasttext.string_utils import parse_sentences
+        from dp_fasttext.utils.string_utils import parse_sentences
 
         if self.has_description():
             fields = ['title', 'headline1', 'headline2', 'headline3', 'summary']
@@ -56,7 +56,7 @@ class Page(object):
 
             # Handle markdown sections
             if 'sections' in self._json:
-                from dp_fasttext.corpa import markdown_to_text
+                from dp_fasttext.ml.corpa import markdown_to_text
                 sections = self.sections
                 for section in sections:
                     if "title" in section:
@@ -76,7 +76,7 @@ class Page(object):
 
     def get_labels(self) -> Set[str]:
         if self.has_keywords():
-            from dp_fasttext.string_utils import parse
+            from dp_fasttext.utils.string_utils import parse
             keywords = self.description["keywords"]
 
             labels = []

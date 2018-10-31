@@ -1,5 +1,5 @@
 from dp4py.config.section import Section
-from config.config import APP_CONFIG, LOGGING_CONFIG
+from dp_fasttext.config.config import APP_CONFIG, LOGGING_CONFIG
 
 CONFIG = Section("Global App Config")
 

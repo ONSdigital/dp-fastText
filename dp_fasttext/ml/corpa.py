@@ -1,5 +1,5 @@
 from typing import List
-from dp_fasttext.page import Page
+from dp_fasttext.models.page import Page
 
 from tqdm import tqdm
 
@@ -29,7 +29,7 @@ def generate_labelled_corpus(pages: List[Page], prefix: str="__label__") -> List
 
 def write_corpus(fname_prefix: str, complete_corpus: List[str], randomize: bool=True):
     """
-    Splits the corpus into training (.train) and validation (.valid) datasets
+    Splits the corpus into training (.ml) and validation (.valid) datasets
     """
     import numpy as np
 
@@ -41,7 +41,7 @@ def write_corpus(fname_prefix: str, complete_corpus: List[str], randomize: bool=
     train_corpus = complete_corpus[:size_train]
     valid_corpus = complete_corpus[size_train:]
 
-    for suffix, corpus in zip(['train', 'valid'], [train_corpus, valid_corpus]):
+    for suffix, corpus in zip(['ml', 'valid'], [train_corpus, valid_corpus]):
         with open("%s.%s" % (fname_prefix, suffix), "w") as f:
             for line in tqdm(corpus):
                 f.write("%s\n" % line)

@@ -27,7 +27,7 @@ def train_model(fname_prefix: str, out_fname: str, label_prefix: str="__label__"
         "params": params
     })
     model = fastText.train_supervised(input="%s.train" % fname_prefix, label=label_prefix, **params)
-    logging.info("Writing model to disk", extra = {
+    logging.info("Writing model to disk", extra={
         "output_file": out_fname
     })
     model.save_model(out_fname)

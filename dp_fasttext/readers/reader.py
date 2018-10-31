@@ -1,7 +1,7 @@
 import abc
 from typing import List
 
-from dp_fasttext.page import Page
+from dp_fasttext.models.page import Page
 
 
 class DocumentReader(abc.ABC):

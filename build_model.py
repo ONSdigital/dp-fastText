@@ -1,17 +1,40 @@
 import sys
 import logging.config
 
-from dp_fasttext.train import train_model
-from dp_fasttext.corpa import generate_labelled_corpus, write_corpus
+from dp_fasttext.ml.train import train_model
+from dp_fasttext.ml.corpa import generate_labelled_corpus, write_corpus
 
 # Import readerrs
-from dp_fasttext.mongo.mongo_reader import MongoReader
-from dp_fasttext.elasticsearch.elasticsearch_reader import ElasticsearchReader
+from dp_fasttext.readers.mongo import MongoReader
+from dp_fasttext.readers.elasticsearch import ElasticsearchReader
 
 # Configure logging
 from dp4py_sanic.logging.log_config import log_config
 
 logging.config.dictConfig(log_config)
+
+
+def test(corpus_prefix: str, model):
+    """
+    Tests the precision and recall of a model
+    :param corpus_prefix:
+    :return:
+    """
+    # TODO - Fail build if performance too poor?
+    valid_fname = "%s.valid" % corpus_prefix
+    for k in [1, 5, 10]:
+        logging.info("Validating model", extra={
+            "params": {
+                "validation_file": valid_fname,
+                "k": k
+            }
+        })
+        N, P, R = model.test(valid_fname, k)
+        logging.info("Test complete", extra={
+            "number_of_samples": N,
+            "precision_at_k=%d" % k: P,
+            "recall_at_k=%d" % k: R
+        })
 
 
 def main(corpus_prefix: str, output_fname:str, ndim: int, reader: str= 'mongo'):
@@ -41,23 +64,11 @@ def main(corpus_prefix: str, output_fname:str, ndim: int, reader: str= 'mongo'):
 
         write_corpus(corpus_prefix, corpus, randomize=True)
 
-    model = train_model(corpus_prefix, output_fname, label_prefix='__label__', dim=ndim, minCount=500, minCountLabel=500,
+    model = train_model(corpus_prefix, output_fname, label_prefix='__label__', dim=ndim,
+                        minCount=500, minCountLabel=500, epoch=100,
                         verbose=1)
 
-    valid_fname = "%s.valid" % corpus_prefix
-    for k in [1, 5]:
-        logging.info("Validating model", extra={
-            "params": {
-                "validation_file": valid_fname,
-                "k": k
-            }
-        })
-        N, P, R = model.test(valid_fname, k)
-        logging.info("Test complete", extra={
-            "number_of_samples": N,
-            "precision_at_k=%d" % k: P,
-            "recall_at_k=%d" % k: R
-        })
+    test(corpus_fname_prefix, model)
 
 
 def print_usage(argv):

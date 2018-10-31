@@ -17,7 +17,7 @@ def from_mongo(save_path):
     Reads pages from mongo and stores in sqllite
     :return:
     """
-    from dp_fasttext.mongo import MongoReader
+    from dp_fasttext.readers.mongo.mongo_reader import MongoReader
 
     reader = MongoReader()
     pages = reader.load_pages()

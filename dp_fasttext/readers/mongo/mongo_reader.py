@@ -1,7 +1,7 @@
 from typing import List
 from pymongo import MongoClient
-from dp_fasttext.page import Page
-from dp_fasttext.reader import DocumentReader
+from dp_fasttext.models.page import Page
+from dp_fasttext.readers.reader import DocumentReader
 
 
 class MongoReader(DocumentReader):
