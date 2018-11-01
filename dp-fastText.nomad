@@ -1,4 +1,4 @@
-job "dp-fastText" {
+job "dp-fasttext" {
   datacenters = ["eu-west-1"]
   region      = "eu"
   type        = "service"
@@ -20,11 +20,11 @@ job "dp-fastText" {
       value     = "web.*"
     }
 
-    task "dp-fastText" {
+    task "dp-fasttext" {
       driver = "docker"
 
       artifact {
-        source = "s3::https://s3-eu-west-1.amazonaws.com/{{DEPLOYMENT_BUCKET}}/dp-fastText/{{REVISION}}.tar.gz"
+        source = "s3::https://s3-eu-west-1.amazonaws.com/{{DEPLOYMENT_BUCKET}}/dp-fasttext/{{REVISION}}.tar.gz"
       }
 
       config {
@@ -43,7 +43,7 @@ job "dp-fastText" {
       }
 
       service {
-        name = "dp-fastText"
+        name = "dp-fasttext"
         port = "http"
         tags = ["web"]
 
@@ -70,7 +70,7 @@ job "dp-fastText" {
       }
 
       vault {
-        policies = ["dp-fastText"]
+        policies = ["dp-fasttext"]
       }
     }
   }
@@ -84,11 +84,11 @@ job "dp-fastText" {
       value     = "publishing.*"
     }
 
-    task "dp-fastText" {
+    task "dp-fasttext" {
       driver = "docker"
 
       artifact {
-        source = "s3::https://s3-eu-west-1.amazonaws.com/{{DEPLOYMENT_BUCKET}}/dp-fastText/{{REVISION}}.tar.gz"
+        source = "s3::https://s3-eu-west-1.amazonaws.com/{{DEPLOYMENT_BUCKET}}/dp-fasttext/{{REVISION}}.tar.gz"
       }
 
       config {
@@ -107,7 +107,7 @@ job "dp-fastText" {
       }
 
       service {
-        name = "dp-fastText"
+        name = "dp-fasttext"
         port = "http"
         tags = ["publishing"]
 
@@ -134,7 +134,7 @@ job "dp-fastText" {
       }
 
       vault {
-        policies = ["dp-fastText"]
+        policies = ["dp-fasttext"]
       }
     }
   }
