@@ -84,6 +84,7 @@ class Client(object):
             "port": self.port,
             "target": uri
         })
+        r: Response
         with requests.post(target, data=dumps(data), **kwargs) as r:
             data: dict = r.json()
             return data, r.headers
