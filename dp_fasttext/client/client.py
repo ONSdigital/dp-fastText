@@ -7,6 +7,8 @@ import logging.config
 import requests
 from requests.models import Response
 
+from numpy import ndarray
+
 from uuid import uuid4
 
 from json import dumps
@@ -45,7 +47,6 @@ class Client(object):
     def generate_request_id():
         """
         Generates a random uuid request ID
-        :param self:
         :return:
         """
         return str(uuid4())
@@ -89,7 +90,7 @@ class Client(object):
         })
         return requests.post(target, data=dumps(data), **kwargs)
 
-    def get_sentence_vector(self, query):
+    def get_sentence_vector(self, query) -> ndarray:
         """
         Returns the sentence vector for the given query
         :param query:
@@ -99,9 +100,31 @@ class Client(object):
         data = {
             "query": query
         }
-        return self._post(uri, data)
+        response: Response = self._post(uri, data)
 
-    def predict(self, query: str, num_labels: int, threshold: float) -> Response:
+        json: dict = response.json()
+        if not isinstance(json, dict) or len(json.keys()) == 0:
+            logging.error("Invalid response for method 'get_sentence_vector'", extra={
+                "context": response.headers.get(self.REQUEST_ID_HEADER),
+                "data": json
+            })
+            raise Exception("Invalid response for method 'predict'")
+
+        vector = json.get("vector")
+
+        if not isinstance(vector, list) or len(vector) == 0:
+            logging.error("Word vecotr is None/empty", extra={
+                "context": response.headers.get(self.REQUEST_ID_HEADER),
+                "query_params": {
+                    "query": query
+                },
+                "data": json
+            })
+            raise Exception("Invalid response for method 'predict'")
+
+        return ndarray(vector)
+
+    def predict(self, query: str, num_labels: int, threshold: float) -> tuple:
         """
         Return model labels for the given query string
         :param query:
@@ -115,4 +138,22 @@ class Client(object):
             "num_labels": num_labels,
             "threshold": threshold
         }
-        return self._post(uri, data)
+        response: Response = self._post(uri, data)
+
+        json: dict = response.json()
+        if not isinstance(json, dict) or len(json.keys()) == 0:
+            logging.error("Invalid response for method 'predict'", extra={
+                "context": response.headers.get(self.REQUEST_ID_HEADER),
+                "query_params": {
+                    "query": query,
+                    "num_labels": num_labels,
+                    "threshold": threshold
+                },
+                "data": json
+            })
+            raise Exception("Invalid response for method 'predict'")
+
+        labels = json.get("labels")
+        probabilities = json.get("probabilities")
+
+        return labels, probabilities
