@@ -3,8 +3,7 @@ Defines the HTTP client for making requests to dp-fasttext
 """
 import logging.config
 
-import requests
-from requests.models import Response
+import aiohttp
 
 from numpy import array, ndarray
 
@@ -22,9 +21,10 @@ class Client(object):
 
     REQUEST_ID_HEADER = "X-Request-Id"
 
-    def __init__(self, host, port):
+    def __init__(self, host, port, session: aiohttp.ClientSession):
         self.host = host
         self.port = port
+        self.session = session
 
         self._predict_uri = "/supervised/predict"
         self._sentence_vector_uri = "/supervised/sentence/vector"
@@ -68,7 +68,7 @@ class Client(object):
             uri=uri[1:] if uri.startswith("/") else uri
         )
 
-    def _post(self, uri: str, data: dict, **kwargs) -> tuple:
+    async def _post(self, uri: str, data: dict, **kwargs) -> tuple:
         """
         Send a POST request to the given uri
         :param data:
@@ -84,12 +84,13 @@ class Client(object):
             "port": self.port,
             "target": uri
         })
-        r: Response
-        with requests.post(target, data=dumps(data), **kwargs) as r:
-            data: dict = r.json()
-            return data, r.headers
 
-    def get_sentence_vector(self, query) -> ndarray:
+        async with self.session.post(target, data=dumps(data)) as response:
+            headers = response.headers
+            json = await response.json()
+            return json, headers
+
+    async def get_sentence_vector(self, query) -> ndarray:
         """
         Returns the sentence vector for the given query
         :param query:
@@ -100,7 +101,7 @@ class Client(object):
             "query": query
         }
 
-        json, headers = self._post(uri, data)
+        json, headers = await self._post(uri, data)
         if not isinstance(json, dict) or len(json.keys()) == 0:
             logging.error("Invalid response for method 'get_sentence_vector'", extra={
                 "context": headers.get(self.REQUEST_ID_HEADER),
@@ -122,7 +123,7 @@ class Client(object):
 
         return array(vector)
 
-    def predict(self, query: str, num_labels: int, threshold: float) -> tuple:
+    async def predict(self, query: str, num_labels: int, threshold: float) -> tuple:
         """
         Return model labels for the given query string
         :param query:
@@ -136,7 +137,7 @@ class Client(object):
             "num_labels": num_labels,
             "threshold": threshold
         }
-        json, headers = self._post(uri, data)
+        json, headers = await self._post(uri, data)
 
         if not isinstance(json, dict) or len(json.keys()) == 0:
             logging.error("Invalid response for method 'predict'", extra={
