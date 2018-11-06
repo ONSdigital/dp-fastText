@@ -52,7 +52,8 @@ class Client(object):
         :return:
         """
         return {
-            self.REQUEST_ID_HEADER: self.generate_request_id()
+            self.REQUEST_ID_HEADER: self.generate_request_id(),
+            "Connection": "close"
         }
 
     def target_for_uri(self, uri: str) -> str:
@@ -67,7 +68,7 @@ class Client(object):
             uri=uri[1:] if uri.startswith("/") else uri
         )
 
-    def _post(self, uri: str, data: dict, **kwargs) -> Response:
+    def _post(self, uri: str, data: dict, **kwargs) -> tuple:
         """
         Send a POST request to the given uri
         :param data:
@@ -83,7 +84,9 @@ class Client(object):
             "port": self.port,
             "target": uri
         })
-        return requests.post(target, data=dumps(data), **kwargs)
+        with requests.post(target, data=dumps(data), **kwargs) as r:
+            data: dict = r.json()
+            return data, r.headers
 
     def get_sentence_vector(self, query) -> ndarray:
         """
@@ -95,12 +98,11 @@ class Client(object):
         data = {
             "query": query
         }
-        response: Response = self._post(uri, data)
 
-        json: dict = response.json()
+        json, headers = self._post(uri, data)
         if not isinstance(json, dict) or len(json.keys()) == 0:
             logging.error("Invalid response for method 'get_sentence_vector'", extra={
-                "context": response.headers.get(self.REQUEST_ID_HEADER),
+                "context": headers.get(self.REQUEST_ID_HEADER),
                 "data": json
             })
             raise Exception("Invalid response for method 'predict'")
@@ -109,7 +111,7 @@ class Client(object):
 
         if not isinstance(vector, list) or len(vector) == 0:
             logging.error("Word vecotr is None/empty", extra={
-                "context": response.headers.get(self.REQUEST_ID_HEADER),
+                "context": headers.get(self.REQUEST_ID_HEADER),
                 "query_params": {
                     "query": query
                 },
@@ -133,12 +135,11 @@ class Client(object):
             "num_labels": num_labels,
             "threshold": threshold
         }
-        response: Response = self._post(uri, data)
+        json, headers = self._post(uri, data)
 
-        json: dict = response.json()
         if not isinstance(json, dict) or len(json.keys()) == 0:
             logging.error("Invalid response for method 'predict'", extra={
-                "context": response.headers.get(self.REQUEST_ID_HEADER),
+                "context": headers.get(self.REQUEST_ID_HEADER),
                 "query_params": {
                     "query": query,
                     "num_labels": num_labels,
