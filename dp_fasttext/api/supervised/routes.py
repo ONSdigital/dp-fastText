@@ -13,8 +13,30 @@ from dp_fasttext.api.request.fasttext_request import FasttextRequest
 supervised_blueprint = Blueprint('supervised', url_prefix='/supervised')
 
 
-@supervised_blueprint.route('/labels', methods=['POST'])
-def get_labels(request: FasttextRequest):
+@supervised_blueprint.route('/sentence/vector', methods=['POST'])
+def get_sentence_vector(request: FasttextRequest):
+    """
+    Returns the vector for the input sentence
+    :param request:
+    :return:
+    """
+    app: FasttextServer = request.app
+    model: SupervisedModel = app.get_supervised_model()
+
+    query: str = request.get_query_string()
+
+    vector = model.get_sentence_vector(query)
+
+    response = {
+        "query": query,
+        "vector": vector.tolist()
+    }
+
+    return json(request, response, 200)
+
+
+@supervised_blueprint.route('/predict', methods=['POST'])
+def predict(request: FasttextRequest):
     """
     TODO - batch requests
     Queries the supervised fastText model for learned labels

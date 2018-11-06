@@ -26,7 +26,8 @@ class Client(object):
         self.host = host
         self.port = port
 
-        self.labels_uri = "/supervised/labels"
+        self._predict_uri = "/supervised/predict"
+        self._sentence_vector_uri = "/supervised/sentence/vector"
 
         if "LOGGING_NAMESPACE" not in os.environ:
             SANIC_CONFIG.LOGGING.namespace = "dp-fasttext-client"
@@ -70,7 +71,37 @@ class Client(object):
             uri=uri[1:] if uri.startswith("/") else uri
         )
 
-    def get_labels(self, query: str, num_labels: int, threshold: float) -> Response:
+    def _post(self, uri: str, data: dict, **kwargs) -> Response:
+        """
+        Send a POST request to the given uri
+        :param data:
+        :return:
+        """
+        target = self.target_for_uri(uri)
+        kwargs["headers"] = self.get_headers()
+
+        logging.info("Sending request", extra={
+            "context": kwargs["headers"][self.REQUEST_ID_HEADER],
+            "params": data,
+            "host": self.host,
+            "port": self.port,
+            "target": uri
+        })
+        return requests.post(target, data=dumps(data), **kwargs)
+
+    def get_sentence_vector(self, query):
+        """
+        Returns the sentence vector for the given query
+        :param query:
+        :return:
+        """
+        uri = self._sentence_vector_uri
+        data = {
+            "query": query
+        }
+        return self._post(uri, data)
+
+    def predict(self, query: str, num_labels: int, threshold: float) -> Response:
         """
         Return model labels for the given query string
         :param query:
@@ -78,20 +109,10 @@ class Client(object):
         :param threshold:
         :return:
         """
-        headers = self.get_headers()
+        uri = self._predict_uri
         data = {
             "query": query,
             "num_labels": num_labels,
             "threshold": threshold
         }
-
-        target = self.target_for_uri(self.labels_uri)
-
-        logging.info("Sending request", extra={
-            "context": headers[self.REQUEST_ID_HEADER],
-            "params": data,
-            "host": self.host,
-            "port": self.port,
-            "uri": self.labels_uri
-        })
-        return requests.post(target, headers=headers, data=dumps(data))
+        return self._post(uri, data)

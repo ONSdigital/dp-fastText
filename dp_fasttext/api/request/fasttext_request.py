@@ -11,21 +11,21 @@ class FasttextRequest(Request):
         Returns query string from POST params
         :return:
         """
-        # return self.json.get("query")
-        return "rpi"
+        return self.json.get("query")
+        # return "rpi"
 
     def get_num_labels(self) -> int:
         """
         Returns the number of requested labels from POST params
         :return:
         """
-        # return self.json.get("num_labels")
-        return 10
+        return self.json.get("num_labels")
+        # return 10
 
     def get_threshold(self) -> float:
         """
         Returns the label threshold from POST params
         :return:
         """
-        # return self.json.get("threshold")
-        return 0.0
+        return self.json.get("threshold")
+        # return 0.0
