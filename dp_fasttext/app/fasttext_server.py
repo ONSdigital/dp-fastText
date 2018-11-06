@@ -12,11 +12,11 @@ from dp_fasttext.app.ml.supervised_models_cache import get_supervised_model
 
 class FasttextServer(Server):
 
-    def __init__(self, name=None, router=None, error_handler=None,
+    def __init__(self, log_namespace: str, name=None, router=None, error_handler=None,
                  load_env=True,
                  strict_slashes=False,
                  configure_logging=True):
-        super(FasttextServer, self).__init__(name=name, router=router, error_handler=error_handler,
+        super(FasttextServer, self).__init__(log_namespace, name=name, router=router, error_handler=error_handler,
                                              load_env=load_env, request_class=FasttextRequest,
                                              strict_slashes=strict_slashes,
                                              configure_logging=configure_logging)

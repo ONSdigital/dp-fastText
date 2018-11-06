@@ -13,7 +13,6 @@ from json import dumps
 
 from urllib import parse as urllib_parse
 
-from dp_fasttext.config import CONFIG
 from dp4py_sanic.config import CONFIG as SANIC_CONFIG
 from dp4py_sanic.logging.log_config import log_config as sanic_log_config
 logging.config.dictConfig(sanic_log_config)
@@ -30,7 +29,7 @@ class Client(object):
         self.labels_uri = "/supervised/labels"
 
         if "LOGGING_NAMESPACE" not in os.environ:
-            SANIC_CONFIG.LOGGING.namespace = CONFIG.APP.title
+            SANIC_CONFIG.LOGGING.namespace = "dp-fasttext-client"
 
     @staticmethod
     def url_encode(params: dict):

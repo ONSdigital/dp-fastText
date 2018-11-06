@@ -16,6 +16,7 @@ supervised_blueprint = Blueprint('supervised', url_prefix='/supervised')
 @supervised_blueprint.route('/labels', methods=['POST'])
 def get_labels(request: FasttextRequest):
     """
+    TODO - batch requests
     Queries the supervised fastText model for learned labels
     :param request:
     :return:
