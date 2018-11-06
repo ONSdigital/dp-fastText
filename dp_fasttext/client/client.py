@@ -1,7 +1,6 @@
 """
 Defines the HTTP client for making requests to dp-fasttext
 """
-import os
 import logging.config
 
 import requests
@@ -15,7 +14,6 @@ from json import dumps
 
 from urllib import parse as urllib_parse
 
-from dp4py_sanic.config import CONFIG as SANIC_CONFIG
 from dp4py_sanic.logging.log_config import log_config as sanic_log_config
 logging.config.dictConfig(sanic_log_config)
 
@@ -30,20 +28,6 @@ class Client(object):
 
         self._predict_uri = "/supervised/predict"
         self._sentence_vector_uri = "/supervised/sentence/vector"
-
-    def _log(self, message, level, extra):
-        extra["namespace"] = "dp-fasttext-client"
-        fn = getattr(logging, level)
-        fn(message, extra=extra)
-
-    def info(self, message, extra):
-        self._log(message, "info", extra)
-
-    def error(self, message, extra):
-        self._log(message, "error", extra)
-
-    def debug(self, message, extra):
-        self._log(message, "debug", extra)
 
     @staticmethod
     def url_encode(params: dict):
@@ -92,7 +76,7 @@ class Client(object):
         target = self.target_for_uri(uri)
         kwargs["headers"] = self.get_headers()
 
-        self.info("Sending request", extra={
+        logging.info("Sending request", extra={
             "context": kwargs["headers"][self.REQUEST_ID_HEADER],
             "params": data,
             "host": self.host,
@@ -115,7 +99,7 @@ class Client(object):
 
         json: dict = response.json()
         if not isinstance(json, dict) or len(json.keys()) == 0:
-            self.error("Invalid response for method 'get_sentence_vector'", extra={
+            logging.error("Invalid response for method 'get_sentence_vector'", extra={
                 "context": response.headers.get(self.REQUEST_ID_HEADER),
                 "data": json
             })
@@ -124,7 +108,7 @@ class Client(object):
         vector = json.get("vector")
 
         if not isinstance(vector, list) or len(vector) == 0:
-            self.error("Word vecotr is None/empty", extra={
+            logging.error("Word vecotr is None/empty", extra={
                 "context": response.headers.get(self.REQUEST_ID_HEADER),
                 "query_params": {
                     "query": query
@@ -153,7 +137,7 @@ class Client(object):
 
         json: dict = response.json()
         if not isinstance(json, dict) or len(json.keys()) == 0:
-            self.error("Invalid response for method 'predict'", extra={
+            logging.error("Invalid response for method 'predict'", extra={
                 "context": response.headers.get(self.REQUEST_ID_HEADER),
                 "query_params": {
                     "query": query,
