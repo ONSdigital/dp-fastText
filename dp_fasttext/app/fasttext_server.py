@@ -29,10 +29,11 @@ class FasttextServer(Server):
                 "filename": self.supervised_filename
             }
         })
-        self.get_supervised_model()
+        model: SupervisedModel = self.get_supervised_model()
         logging.info("Successfully initialised fastText model", extra={
             "params": {
-                "filename": self.supervised_filename
+                "filename": self.supervised_filename,
+                "matrix_dimensions": "(%d, %d)" % (len(model.get_words()), model.get_dimension())
             }
         })
 
