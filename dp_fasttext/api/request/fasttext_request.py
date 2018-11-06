@@ -12,7 +12,6 @@ class FasttextRequest(Request):
         :return:
         """
         return self.json.get("query")
-        # return "rpi"
 
     def get_num_labels(self) -> int:
         """
@@ -20,7 +19,6 @@ class FasttextRequest(Request):
         :return:
         """
         return self.json.get("num_labels")
-        # return 10
 
     def get_threshold(self) -> float:
         """
@@ -28,4 +26,3 @@ class FasttextRequest(Request):
         :return:
         """
         return self.json.get("threshold")
-        # return 0.0

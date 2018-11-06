@@ -7,5 +7,5 @@ APP_CONFIG = Section("App config")
 APP_CONFIG.title = "dp-fastText"
 
 ML_CONFIG = Section("ML Config")
-ML_CONFIG.supervised_model_filename = os.environ.get("SUPERVISED_MODEL_FILENAME",
+ML_CONFIG.supervised_model_filename = os.environ.get("",
                                                      "./supervised_models/ons_supervised.bin")

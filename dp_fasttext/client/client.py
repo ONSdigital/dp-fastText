@@ -7,7 +7,7 @@ import logging.config
 import requests
 from requests.models import Response
 
-from numpy import ndarray
+from numpy import array, ndarray
 
 from uuid import uuid4
 
@@ -122,7 +122,7 @@ class Client(object):
             })
             raise Exception("Invalid response for method 'predict'")
 
-        return ndarray(vector)
+        return array(vector)
 
     def predict(self, query: str, num_labels: int, threshold: float) -> tuple:
         """
