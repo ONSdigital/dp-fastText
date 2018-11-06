@@ -3,6 +3,8 @@ Cache for supervised ML models
 """
 import logging
 
+from dp_fasttext.ml.supervised import SupervisedModel
+
 _cache = {}
 
 
