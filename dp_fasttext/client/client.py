@@ -109,7 +109,7 @@ class Client(object):
             "target": uri
         })
 
-        async with self.session.post(target, data=dumps(data)) as response:
+        async with self.session.post(target, data=dumps(data), **kwargs) as response:
             headers = response.headers
             json = await response.json()
             return json, headers
