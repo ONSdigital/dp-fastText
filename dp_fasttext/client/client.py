@@ -98,7 +98,8 @@ class Client(object):
         :return:
         """
         target = self.target_for_uri(uri)
-        kwargs["headers"] = self.get_headers()
+        if "headers" not in kwargs:
+            kwargs["headers"] = self.get_headers()
 
         logging.info("Sending request", extra={
             "context": kwargs["headers"][self.REQUEST_ID_HEADER],
@@ -113,7 +114,7 @@ class Client(object):
             json = await response.json()
             return json, headers
 
-    async def get_sentence_vector(self, query) -> ndarray:
+    async def get_sentence_vector(self, query, **kwargs) -> ndarray:
         """
         Returns the sentence vector for the given query
         :param query:
@@ -124,7 +125,7 @@ class Client(object):
             "query": query
         }
 
-        json, headers = await self._post(uri, data)
+        json, headers = await self._post(uri, data, **kwargs)
         if not isinstance(json, dict) or len(json.keys()) == 0:
             logging.error("Invalid response for method 'get_sentence_vector'", extra={
                 "context": headers.get(self.REQUEST_ID_HEADER),
@@ -146,7 +147,7 @@ class Client(object):
 
         return array(vector)
 
-    async def predict(self, query: str, num_labels: int, threshold: float) -> tuple:
+    async def predict(self, query: str, num_labels: int, threshold: float, **kwargs) -> tuple:
         """
         Return model labels for the given query string
         :param query:
@@ -160,7 +161,7 @@ class Client(object):
             "num_labels": num_labels,
             "threshold": threshold
         }
-        json, headers = await self._post(uri, data)
+        json, headers = await self._post(uri, data, **kwargs)
 
         if not isinstance(json, dict) or len(json.keys()) == 0:
             logging.error("Invalid response for method 'predict'", extra={
