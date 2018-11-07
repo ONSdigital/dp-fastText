@@ -76,8 +76,7 @@ class Client(object):
         :return:
         """
         return {
-            self.REQUEST_ID_HEADER: self.generate_request_id(),
-            "Connection": "close"
+            self.REQUEST_ID_HEADER: self.generate_request_id()
         }
 
     def target_for_uri(self, uri: str) -> str:
