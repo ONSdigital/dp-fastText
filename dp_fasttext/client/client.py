@@ -22,46 +22,35 @@ class Client(object):
     REQUEST_ID_HEADER = "X-Request-Id"
 
     def __init__(self, host, port):
+        logging.info("Initialising aiohttp.ClientSession")
+
         self.host = host
         self.port = port
-        self.session = None
+        self.session = aiohttp.ClientSession()
 
         self._predict_uri = "/supervised/predict"
         self._sentence_vector_uri = "/supervised/sentence/vector"
 
     def __enter__(self):
-        """
-        Initialise aiohttp.ClientSession
-        :return:
-        """
-        logging.info("Initialising aiohttp.ClientSession")
-        self.session = aiohttp.ClientSession()
+        raise TypeError("Use async with instead")
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """
-        Call close when used in 'with' block
-        :param exc_type:
-        :param exc_val:
-        :param exc_tb:
-        :return:
-        """
-        if exc_type is not None or exc_val is not None or exc_tb is not None:
-            logging.error("Caught exception in 'with' block", extra={
-                "exception": {
-                    "exc_type": exc_type,
-                    "exc_val": exc_val,
-                    "exc_tb": exc_tb
-                }
-            })
-        self.close()
+        # __exit__ should exist in pair with __enter__ but never executed
+        pass  # pragma: no cover
 
-    def close(self):
+    async def __aenter__(self) -> 'Client':
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close()
+
+    async def close(self):
         """
         Close the underlying aiohttp.ClientSession
         :return:
         """
         logging.info("Closing aiohttp.ClientSession")
-        self.session.close()
+        await self.session.close()
         logging.info("aiohttp.ClientSession closed successfully")
 
     @staticmethod
