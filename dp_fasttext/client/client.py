@@ -22,7 +22,7 @@ class Client(object):
     REQUEST_ID_HEADER = "X-Request-Id"
 
     def __init__(self, host, port):
-        logging.info("Initialising aiohttp.ClientSession")
+        logging.debug("Initialising aiohttp.ClientSession")
 
         self.host = host
         self.port = port
@@ -49,9 +49,9 @@ class Client(object):
         Close the underlying aiohttp.ClientSession
         :return:
         """
-        logging.info("Closing aiohttp.ClientSession")
+        logging.debug("Closing aiohttp.ClientSession")
         await self.session.close()
-        logging.info("aiohttp.ClientSession closed successfully")
+        logging.debug("aiohttp.ClientSession closed successfully")
 
     @staticmethod
     def url_encode(params: dict):
