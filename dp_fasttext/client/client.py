@@ -21,13 +21,48 @@ class Client(object):
 
     REQUEST_ID_HEADER = "X-Request-Id"
 
-    def __init__(self, host, port, session: aiohttp.ClientSession):
+    def __init__(self, host, port):
         self.host = host
         self.port = port
-        self.session = session
+        self.session = None
 
         self._predict_uri = "/supervised/predict"
         self._sentence_vector_uri = "/supervised/sentence/vector"
+
+    def __enter__(self):
+        """
+        Initialise aiohttp.ClientSession
+        :return:
+        """
+        logging.info("Initialising aiohttp.ClientSession")
+        self.session = aiohttp.ClientSession()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """
+        Call close when used in 'with' block
+        :param exc_type:
+        :param exc_val:
+        :param exc_tb:
+        :return:
+        """
+        if exc_type is not None or exc_val is not None or exc_tb is not None:
+            logging.error("Caught exception in 'with' block", extra={
+                "exception": {
+                    "exc_type": exc_type,
+                    "exc_val": exc_val,
+                    "exc_tb": exc_tb
+                }
+            })
+        self.close()
+
+    def close(self):
+        """
+        Close the underlying aiohttp.ClientSession
+        :return:
+        """
+        logging.info("Closing aiohttp.ClientSession")
+        self.session.close()
+        logging.info("aiohttp.ClientSession closed successfully")
 
     @staticmethod
     def url_encode(params: dict):
