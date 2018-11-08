@@ -3,6 +3,7 @@ Routes for querying supervised fastText model
 """
 from sanic.blueprints import Blueprint
 
+from dp4py_logging.time import timeit
 from dp4py_sanic.api.response.json_response import json
 
 from dp_fasttext.ml.supervised import SupervisedModel
@@ -14,7 +15,8 @@ supervised_blueprint = Blueprint('supervised', url_prefix='/supervised')
 
 
 @supervised_blueprint.route('/sentence/vector', methods=['POST'])
-def get_sentence_vector(request: FasttextRequest):
+@timeit
+async def get_sentence_vector(request: FasttextRequest):
     """
     Returns the vector for the input sentence
     :param request:
@@ -36,7 +38,8 @@ def get_sentence_vector(request: FasttextRequest):
 
 
 @supervised_blueprint.route('/predict', methods=['POST'])
-def predict(request: FasttextRequest):
+@timeit
+async def predict(request: FasttextRequest):
     """
     TODO - batch requests
     Queries the supervised fastText model for learned labels
