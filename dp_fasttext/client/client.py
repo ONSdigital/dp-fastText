@@ -101,7 +101,7 @@ class Client(object):
         if "headers" not in kwargs:
             kwargs["headers"] = self.get_headers()
 
-        logging.info("Sending request", extra={
+        logging.debug("Sending request", extra={
             "context": kwargs["headers"][self.REQUEST_ID_HEADER],
             "params": data,
             "host": self.host,
