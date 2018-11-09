@@ -20,7 +20,7 @@ version:
 model: fastText
 	python build_model.py corpa/ons_labelled.txt supervised_models/ons_supervised.bin 10
 
-test: fastText
+test: requirements fastText
 	pip install -r requirements_test.txt
 	SUPERVISED_MODEL_FILENAME=supervised_models/ons_supervised_test.bin nosetests -s -v unit/
 
