@@ -6,7 +6,7 @@ build: requirements model
 
 requirements:
 	pip install -r requirements.txt
-	pip install dp
+	python scripts/download_nltk_stopwords.py
 	mkdir -p supervised_models
 
 fastText:
