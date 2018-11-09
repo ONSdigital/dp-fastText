@@ -38,7 +38,7 @@ job "dp-fasttext" {
         image = "{{ECR_URL}}:concourse-{{REVISION}}"
 
         port_map {
-          http = 5000
+          http = 5100
         }
       }
 
@@ -102,7 +102,7 @@ job "dp-fasttext" {
         image = "{{ECR_URL}}:concourse-{{REVISION}}"
 
         port_map {
-          http = 5000
+          http = 5100
         }
       }
 
