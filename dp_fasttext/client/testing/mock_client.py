@@ -30,6 +30,14 @@ def mock_sentence_vector(data: dict) -> dict:
     }
 
 
+def mock_invalid_response():
+    """
+    Returns invalid mock labels and their probabilities
+    :return:
+    """
+    return "Internal server error"
+
+
 class MockClient(Client):
 
     def __init__(self):

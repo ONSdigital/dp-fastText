@@ -131,19 +131,19 @@ class Client(object):
                 "context": headers.get(self.REQUEST_ID_HEADER),
                 "data": json
             })
-            raise Exception("Invalid response for method 'predict'")
+            raise Exception("Invalid response for method 'get_sentence_vector'")
 
         vector = json.get("vector")
 
         if not isinstance(vector, list) or len(vector) == 0:
-            logging.error("Word vecotr is None/empty", extra={
+            logging.error("Word vector is None/empty", extra={
                 "context": headers.get(self.REQUEST_ID_HEADER),
                 "query_params": {
                     "query": query
                 },
                 "data": json
             })
-            raise Exception("Invalid response for method 'predict'")
+            raise Exception("Invalid response for method 'get_sentence_vector'")
 
         return array(vector)
 
