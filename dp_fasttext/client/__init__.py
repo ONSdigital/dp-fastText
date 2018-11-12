@@ -22,6 +22,9 @@ class Client(object):
 
         self.session = aiohttp.ClientSession()
 
+        # Add uri for healthcheck
+        self._health_uri = "/healthcheck"
+
         # Attach supervised and unsupervised clients
         self.supervised = SupervisedClient(self)
         self.unsupervised = UnsupervisedClient(self)
