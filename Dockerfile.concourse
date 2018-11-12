@@ -4,3 +4,5 @@ COPY . /dp-fastText
 WORKDIR /dp-fastText
 
 RUN make build
+
+CMD python manager.py

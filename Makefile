@@ -4,6 +4,9 @@ all: build test
 
 build: requirements model
 
+debug: build run
+	python manager.py
+
 requirements:
 	pip install -r requirements.txt
 	python scripts/download_nltk_stopwords.py
