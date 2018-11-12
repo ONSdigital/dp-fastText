@@ -28,6 +28,7 @@ class Client(object):
         self.port = port
         self.session = aiohttp.ClientSession()
 
+        self._health_uri = "/healthcheck"
         self._predict_uri = "/supervised/predict"
         self._sentence_vector_uri = "/supervised/sentence/vector"
 
@@ -110,6 +111,17 @@ class Client(object):
         })
 
         async with self.session.post(target, data=dumps(data), **kwargs) as response:
+            headers = response.headers
+            json = await response.json()
+            return json, headers
+
+    async def healthcheck(self, headers=None):
+        """
+        Pings the healthcheck API
+        :return:
+        """
+        target = self.target_for_uri(self._health_uri)
+        async with self.session.get(target, headers=headers) as response:
             headers = response.headers
             json = await response.json()
             return json, headers
