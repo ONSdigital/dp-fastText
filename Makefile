@@ -22,6 +22,7 @@ version:
 
 model: fastText
 	python build_model.py corpa/ons_labelled.txt supervised_models/ons_supervised.bin 10
+	scripts/bin_to_vec.py supervised_models/ons_supervised.bin > supervised_models/ons_supervised.vec
 
 test: requirements fastText
 	pip install -r requirements_test.txt

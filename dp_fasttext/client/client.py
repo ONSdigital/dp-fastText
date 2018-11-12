@@ -28,9 +28,6 @@ class Client(object):
         self.port = port
         self.session = aiohttp.ClientSession()
 
-        self._predict_uri = "/supervised/predict"
-        self._sentence_vector_uri = "/supervised/sentence/vector"
-
     def __enter__(self):
         raise TypeError("Use async with instead")
 
@@ -114,6 +111,15 @@ class Client(object):
             json = await response.json()
             return json, headers
 
+
+class SupervisedClient(Client):
+
+    def __init__(self, host: str, port: int):
+        super(SupervisedClient, self).__init__(host, port)
+
+        self._predict_uri = "/supervised/predict"
+        self._sentence_vector_uri = "/supervised/sentence/vector"
+
     async def get_sentence_vector(self, query, **kwargs) -> ndarray:
         """
         Returns the sentence vector for the given query
@@ -179,3 +185,40 @@ class Client(object):
         probabilities = json.get("probabilities")
 
         return labels, probabilities
+
+
+class UnsupervisedClient(Client):
+
+    def __init__(self, host: str, port: int):
+        super(UnsupervisedClient, self).__init__(host, port)
+
+        self._similar_to_vector_uri = "/unsupervised/similar/vector"
+
+    async def similar_by_vector(self, encoded_vector: str, num_labels: int) -> list:
+        """
+        Queries the unsupervised similar by vector API
+        :param encoded_vector:
+        :param num_labels:
+        :return:
+        """
+        uri = self._similar_to_vector_uri
+        data = {
+            "encoded_vector": encoded_vector,
+            "num_labels": num_labels
+        }
+        json, headers = await self._post(uri, data, **kwargs)
+
+        if not isinstance(json, dict) or len(json.keys()) == 0:
+            logging.error("Invalid response for method 'predict'", extra={
+                "context": headers.get(self.REQUEST_ID_HEADER),
+                "query_params": {
+                    "encoded_vector": encoded_vector,
+                    "num_labels": num_labels
+                },
+                "data": json
+            })
+            raise Exception("Invalid response for method 'predict'")
+
+        similar_words: list = json.get("words")
+
+        return similar_words
