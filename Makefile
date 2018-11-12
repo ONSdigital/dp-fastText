@@ -26,7 +26,7 @@ model: fastText
 
 test: requirements fastText
 	pip install -r requirements_test.txt
-	SUPERVISED_MODEL_FILENAME=supervised_models/ons_supervised_test.bin nosetests -s -v unit/
+	SUPERVISED_MODEL_FILENAME=supervised_models/ons_supervised_test.bin UNSUPERVISED_MODEL_FILENAME=supervised_models/ons_supervised_test.vec nosetests -s -v unit/
 
 acceptance:
 	

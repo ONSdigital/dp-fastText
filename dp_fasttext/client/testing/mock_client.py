@@ -30,6 +30,17 @@ def mock_sentence_vector(data: dict) -> dict:
     }
 
 
+def mock_similar_vector() -> dict:
+    """
+    Returns a mock list of labels for the input vector
+    :param data:
+    :return:
+    """
+    return {
+        "words": ['economy', 'inflation']
+    }
+
+
 def mock_invalid_response():
     """
     Returns invalid mock labels and their probabilities
@@ -43,13 +54,5 @@ class MockClient(Client):
     def __init__(self):
         super(MockClient, self).__init__("test", 1234)
 
-    async def _post(self, uri: str, data: dict, **kwargs) -> tuple:
-        headers = self.get_headers()
-        if uri == self._predict_uri:
-            json = mock_labels_api()
-        elif uri == self._sentence_vector_uri:
-            json = mock_sentence_vector(data)
-        else:
-            raise NotImplementedError("No mock for uri '{0}'".format(uri))
-
-        return json, headers
+    async def post(self, uri: str, data: dict, **kwargs) -> tuple:
+        raise NotImplementedError("Method 'post' of MockClient must be mocked!")
