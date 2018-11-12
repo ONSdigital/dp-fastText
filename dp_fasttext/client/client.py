@@ -115,16 +115,26 @@ class Client(object):
             json = await response.json()
             return json, headers
 
+    async def _get(self, uri: str, **kwargs):
+        """
+        Wrapper for GET requests that allows mocking
+        :param uri:
+        :param kwargs:
+        :return:
+        """
+        target = self.target_for_uri(uri)
+        async with self.session.get(target, **kwargs) as response:
+            headers = response.headers
+            json = await response.json()
+            return json, headers
+
     async def healthcheck(self, headers=None):
         """
         Pings the healthcheck API
         :return:
         """
-        target = self.target_for_uri(self._health_uri)
-        async with self.session.get(target, headers=headers) as response:
-            headers = response.headers
-            json = await response.json()
-            return json, headers
+        json, headers = await self._get(self._health_uri, headers=headers)
+        return json, headers
 
     async def get_sentence_vector(self, query, **kwargs) -> ndarray:
         """
