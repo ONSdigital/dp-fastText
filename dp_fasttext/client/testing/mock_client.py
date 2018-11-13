@@ -103,6 +103,8 @@ async def mock_post(uri: str, data: dict, **kwargs):
         return mock_labels_api(), headers
     elif uri == "/supervised/sentence/vector":
         return mock_sentence_vector(data), headers
+    elif uri == "/unsupervised/similar/vector":
+        return mock_similar_vector()
     else:
         raise NotImplementedError("Mock post not implemented for uri '{0}'".format(uri))
 
