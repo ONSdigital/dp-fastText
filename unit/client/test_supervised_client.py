@@ -9,7 +9,7 @@ from unit.utils.async_test import AsyncTestCase
 from dp_fasttext.client.testing.mock_client import MockClient, mock_sentence_vector, mock_labels_api, mock_invalid_response
 
 
-class ClientTestCase(TestCase, AsyncTestCase):
+class SupervisedClientTestCase(TestCase, AsyncTestCase):
 
     def test_healthcheck(self):
         """
@@ -29,12 +29,12 @@ class ClientTestCase(TestCase, AsyncTestCase):
             # Init mock client
             async with MockClient() as client:
                 # Mock out _post
-                client._get = MagicMock(return_value=return_fn())
+                client.get = MagicMock(return_value=return_fn())
 
                 expected_uri = "/healthcheck"
                 health = await client.healthcheck(headers=headers)
 
-                client._get.assert_called_with(expected_uri, headers=headers)
+                client.get.assert_called_with(expected_uri, headers=headers)
 
         self.run_async(async_test_function)
 
@@ -62,14 +62,14 @@ class ClientTestCase(TestCase, AsyncTestCase):
             # Init mock client
             async with MockClient() as client:
                 # Mock out _post
-                client._post = MagicMock(return_value=return_fn())
+                client.post = MagicMock(return_value=return_fn())
 
                 expected_uri = "/supervised/sentence/vector"
 
                 # Make the call
-                vector = await client.get_sentence_vector(query, headers=headers)
+                vector = await client.supervised.get_sentence_vector(query, headers=headers)
 
-                client._post.assert_called_with(expected_uri, data, headers=headers)
+                client.post.assert_called_with(expected_uri, data, headers=headers)
 
         self.run_async(async_test_function)
 
@@ -97,15 +97,15 @@ class ClientTestCase(TestCase, AsyncTestCase):
             # Init mock client
             async with MockClient() as client:
                 # Mock out _post
-                client._post = MagicMock(return_value=return_fn())
+                client.post = MagicMock(return_value=return_fn())
 
                 expected_uri = "/supervised/sentence/vector"
 
                 # Make the call and assert exception raised
                 with self.assertRaises(Exception) as context:
-                    vector = await client.get_sentence_vector(query, headers=headers)
+                    vector = await client.supervised.get_sentence_vector(query, headers=headers)
                     self.assertIn("Invalid response for method 'get_sentence_vector'", str(context))
-                client._post.assert_called_with(expected_uri, data, headers=headers)
+                client.post.assert_called_with(expected_uri, data, headers=headers)
 
         self.run_async(async_test_function)
 
@@ -138,14 +138,14 @@ class ClientTestCase(TestCase, AsyncTestCase):
             # Init mock client
             async with MockClient() as client:
                 # Mock out _post
-                client._post = MagicMock(return_value=return_fn())
+                client.post = MagicMock(return_value=return_fn())
 
                 expected_uri = "/supervised/predict"
 
                 # Make the call
-                labels, probabilities = await client.predict(query, num_labels, threshold, headers=headers)
+                labels, probabilities = await client.supervised.predict(query, num_labels, threshold, headers=headers)
 
-                client._post.assert_called_with(expected_uri, data, headers=headers)
+                client.post.assert_called_with(expected_uri, data, headers=headers)
 
         self.run_async(async_test_function)
 
@@ -178,14 +178,14 @@ class ClientTestCase(TestCase, AsyncTestCase):
             # Init mock client
             async with MockClient() as client:
                 # Mock out _post
-                client._post = MagicMock(return_value=return_fn())
+                client.post = MagicMock(return_value=return_fn())
 
                 expected_uri = "/supervised/predict"
 
                 # Make the call and assert exception raised
                 with self.assertRaises(Exception) as context:
-                    labels, probabilities = await client.predict(query, num_labels, threshold, headers=headers)
+                    labels, probabilities = await client.supervised.predict(query, num_labels, threshold, headers=headers)
                     self.assertIn("Invalid response for method 'get_sentence_vector'", str(context))
-                client._post.assert_called_with(expected_uri, data, headers=headers)
+                client.post.assert_called_with(expected_uri, data, headers=headers)
 
         self.run_async(async_test_function)
