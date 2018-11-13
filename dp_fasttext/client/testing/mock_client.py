@@ -1,6 +1,9 @@
 """
 Mock fasttext client for unit testing
 """
+from typing import Tuple, Any
+from multidict import CIMultiDictProxy
+
 from dp_fasttext.client import Client
 
 
@@ -54,5 +57,8 @@ class MockClient(Client):
     def __init__(self):
         super(MockClient, self).__init__("test", 1234)
 
-    async def post(self, uri: str, data: dict, **kwargs) -> tuple:
+    async def get(self, uri: str, **kwargs) -> Tuple[Any, CIMultiDictProxy]:
+        raise NotImplementedError("Method 'get' of MockClient must be mocked!")
+
+    async def post(self, uri: str, data: dict, **kwargs) -> Tuple[Any, CIMultiDictProxy]:
         raise NotImplementedError("Method 'post' of MockClient must be mocked!")
