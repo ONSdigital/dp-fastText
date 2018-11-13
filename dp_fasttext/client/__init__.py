@@ -1,20 +1,23 @@
+from .clients import SupervisedClient, UnsupervisedClient
+
 import aiohttp
 from uuid import uuid4
 from json import dumps
+
+from typing import Tuple, Any
+from multidict import CIMultiDictProxy
 from urllib import parse as urllib_parse
 
 import logging.config
 from dp4py_sanic.logging.log_config import log_config as sanic_log_config
-logging.config.dictConfig(sanic_log_config)
 
-from .clients import SupervisedClient, UnsupervisedClient
+logging.config.dictConfig(sanic_log_config)
 
 
 class Client(object):
-
     REQUEST_ID_HEADER = "X-Request-Id"
 
-    def __init__(self, host, port):
+    def __init__(self, host: str, port: int):
         logging.debug("Initialising aiohttp.ClientSession")
 
         self.host = host
@@ -51,7 +54,7 @@ class Client(object):
         await self.session.close()
         logging.debug("aiohttp.ClientSession closed successfully")
 
-    async def _get(self, uri: str, **kwargs):
+    async def get(self, uri: str, **kwargs) -> Tuple[Any, CIMultiDictProxy]:
         """
         Wrapper for GET requests that allows mocking
         :param uri:
@@ -61,57 +64,10 @@ class Client(object):
         target = self.target_for_uri(uri)
         async with self.session.get(target, **kwargs) as response:
             headers = response.headers
-            json = await response.json()
+            json: Any = await response.json()
             return json, headers
 
-    async def healthcheck(self, headers=None):
-        """
-        Pings the healthcheck API
-        :return:
-        """
-        json, headers = await self._get(self._health_uri, headers=headers)
-        return json, headers
-
-
-    @staticmethod
-    def url_encode(params: dict):
-        """
-        Url encode a dictionary
-        :param params:
-        :return:
-        """
-        return urllib_parse.urlencode(params)
-
-    @staticmethod
-    def generate_request_id():
-        """
-        Generates a random uuid request ID
-        :return:
-        """
-        return str(uuid4())
-
-    def get_headers(self):
-        """
-        Returns headers for requests
-        :return:
-        """
-        return {
-            self.REQUEST_ID_HEADER: self.generate_request_id()
-        }
-
-    def target_for_uri(self, uri: str) -> str:
-        """
-        Returns the full url for a given uri
-        :param uri:
-        :return:
-        """
-        return "http://{host}:{port}/{uri}".format(
-            host=self.host,
-            port=self.port,
-            uri=uri[1:] if uri.startswith("/") else uri
-        )
-
-    async def post(self, uri: str, data: dict, **kwargs) -> tuple:
+    async def post(self, uri: str, data: dict, **kwargs) -> Tuple[Any, CIMultiDictProxy]:
         """
         Send a POST request to the given uri
         :param uri:
@@ -132,5 +88,51 @@ class Client(object):
 
         async with self.session.post(target, data=dumps(data), **kwargs) as response:
             headers = response.headers
-            json = await response.json()
+            json: Any = await response.json()
             return json, headers
+
+    async def healthcheck(self, headers: dict=None) -> Tuple[Any, CIMultiDictProxy]:
+        """
+        Pings the healthcheck API
+        :return:
+        """
+        json, headers = await self.get(self._health_uri, headers=headers)
+        return json, headers
+
+    @staticmethod
+    def url_encode(params: dict) -> str:
+        """
+        Url encode a dictionary
+        :param params:
+        :return:
+        """
+        return urllib_parse.urlencode(params)
+
+    @staticmethod
+    def generate_request_id() -> str:
+        """
+        Generates a random uuid request ID
+        :return:
+        """
+        return str(uuid4())
+
+    def get_headers(self) -> dict:
+        """
+        Returns headers for requests
+        :return:
+        """
+        return {
+            self.REQUEST_ID_HEADER: self.generate_request_id()
+        }
+
+    def target_for_uri(self, uri: str) -> str:
+        """
+        Returns the full url for a given uri
+        :param uri:
+        :return:
+        """
+        return "http://{host}:{port}/{uri}".format(
+            host=self.host,
+            port=self.port,
+            uri=uri[1:] if uri.startswith("/") else uri
+        )

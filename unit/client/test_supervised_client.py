@@ -29,12 +29,12 @@ class SupervisedClientTestCase(TestCase, AsyncTestCase):
             # Init mock client
             async with MockClient() as client:
                 # Mock out _post
-                client._get = MagicMock(return_value=return_fn())
+                client.get = MagicMock(return_value=return_fn())
 
                 expected_uri = "/healthcheck"
                 health = await client.healthcheck(headers=headers)
 
-                client._get.assert_called_with(expected_uri, headers=headers)
+                client.get.assert_called_with(expected_uri, headers=headers)
 
         self.run_async(async_test_function)
 
