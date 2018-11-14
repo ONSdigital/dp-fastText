@@ -10,7 +10,7 @@ reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
     name='dp-fasttext',
-    version='',
+    version='0.9.0',
     packages=find_packages(),
     url='',
     license='',

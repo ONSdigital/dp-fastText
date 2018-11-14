@@ -58,7 +58,7 @@ def remove_stop_words(text: str):
     return " ".join(tokens)
 
 
-def decode_float_list(base64_string) -> List[float]:
+def decode_float_list(base64_string) -> np.ndarray:
     """
     Decodes a list of floats encoded as a binary string
     :param base64_string:
@@ -68,7 +68,7 @@ def decode_float_list(base64_string) -> List[float]:
     float_8byte_big_endian = '>f8'
 
     decoded_bytes = base64.b64decode(base64_string)
-    return np.frombuffer(decoded_bytes, dtype=np.dtype(float_8byte_big_endian)).tolist()
+    return np.frombuffer(decoded_bytes, dtype=np.dtype(float_8byte_big_endian))
 
 
 def encode_float_list(array: List[float]) -> str:

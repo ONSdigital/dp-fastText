@@ -9,6 +9,7 @@ from dp_fasttext.config import CONFIG
 from dp_fasttext.app.fasttext_server import FasttextServer
 from dp_fasttext.api.supervised.routes import supervised_blueprint
 from dp_fasttext.api.healhcheck.routes import healthcheck_blueprint
+from dp_fasttext.api.unsupervised.routes import unsupervised_blueprint
 
 from dp4py_sanic.app.exceptions.error_handlers import ErrorHandlers
 
@@ -26,6 +27,7 @@ def create_app() -> FasttextServer:
 
     # Register blueprints
     app.blueprint(supervised_blueprint)
+    app.blueprint(unsupervised_blueprint)
     app.blueprint(healthcheck_blueprint)
 
     logging.info("Using config", extra={"config": CONFIG.to_dict()})
