@@ -11,10 +11,11 @@ schemes:
 host: localhost:5100
 tags:
   - name: "supervised"
+  - name: "unsupervised"
   - name: "healthcheck"
 
 paths:
-  /predict:
+  /supervised/predict:
     post:
       tags:
         - supervised
@@ -28,25 +29,27 @@ paths:
         - in: query
           name: query
           required: true
-          description: The query text to make predictions for
+          description: "The query text to make predictions for"
           type: string
         - in: query
           name: num_labels
           required: false
-          description: The number of labels to attempt to predict
+          description: "The number of labels to attempt to predict"
           type: integer
         - in: query
           name: threshold
           required: false
-          description: Probability threshold for a label to be returned
+          description: "Probability threshold for a label to be returned"
           type: number
       responses:
         200:
           description: OK
         400:
           description: Query string not specified
+        500:
+          description: Internal server error
 
-  /sentence/vector:
+  /supervised/sentence/vector:
     post:
       tags:
         - supervised
@@ -60,27 +63,55 @@ paths:
         - in: query
           name: query
           required: true
-          description: The query text to make predictions for
+          description: "The query text to make predictions for"
           type: string
       responses:
         200:
           description: OK
         400:
           description: Query string not specified
+        500:
+          description: Internal server error
+
+  /unsupervised/similar/vector:
+    post:
+      tags:
+       - unsupervised
+      summary: "Returns a list of words similar to the input vector"
+      description: "Returns a list of words similar to the input vector"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: query
+          name: encoded_vector
+          required: true
+          description: "The string encoded vector"
+          type: string
+        - in: query
+          name: num_labels
+          required: false
+          description: "The maximum number of labels to generate"
+          type: integer
+      responses:
+        200:
+          description: OK
+        400:
+          description: Query string not specified
+        500:
+          description: Internal server error
 
   /healthcheck:
     get:
       tags:
         - healthcheck
       summary: "Healthcheck API"
-      description: "API to query the APP for current health status"
+      description: "Empty healthcheck API to test availability of the app"
       responses:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/HealthCheck'
-
-
-definitions:
-  HealthCheck:
-    type: object
+            type: object
+        500:
+          description: Internal server error
