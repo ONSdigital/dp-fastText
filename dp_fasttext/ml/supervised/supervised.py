@@ -3,10 +3,11 @@ This file defines classes and methods for working with supervised fastText model
 """
 import logging
 import fastText
+from typing import Dict
 
 import numpy as np
 
-from dp_fasttext.ml.utils import cosine_similarity
+from dp_fasttext.ml.utils import cosine_similarity, encode_float_list
 
 
 class SupervisedModel(fastText.FastText._FastText):
@@ -37,6 +38,25 @@ class SupervisedModel(fastText.FastText._FastText):
         for i in range(len(matrix)):
             normed_matrix[i] = matrix[i] / norm_vector[i]
         return normed_matrix
+
+    def batch_get_sentence_vector(self, id_text_map: Dict[str, str]):
+        """
+        Given a dict of id to string, get a single vector represenation for each entry.
+        """
+        # Build dict to hold results
+        results = {}
+
+        # Iterate over id map
+        for _id in id_text_map:
+            vector: np.ndarray = self.get_sentence_vector(id_text_map.get(_id))
+
+            # Encode
+            encoded_vector: str = encode_float_list(list(vector.tolist()))
+
+            # Add to results
+            results[_id] = encoded_vector
+
+        return results
 
     def predict(self, text, k=1, threshold=0.0):
         """
