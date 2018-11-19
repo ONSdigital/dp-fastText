@@ -101,7 +101,7 @@ async def mock_post(uri: str, data: dict, **kwargs):
 
     if uri == "/supervised/predict":
         return mock_labels_api(), headers
-    elif uri == "/supervised/sentence/vector":
+    elif uri == "/supervised/vector":
         return mock_sentence_vector(data), headers
     elif uri == "/unsupervised/similar/vector":
         return mock_similar_vector(), headers
