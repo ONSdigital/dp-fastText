@@ -16,8 +16,7 @@ from dp_fasttext.api.request.fasttext_request import FasttextRequest
 supervised_blueprint = Blueprint('supervised', url_prefix='/supervised')
 
 
-@supervised_blueprint.route('/', methods=['GET'])
-@timeit
+@supervised_blueprint.route('/info', methods=['GET'])
 async def info(request: FasttextRequest):
     """
     Returns info about the supervised model
