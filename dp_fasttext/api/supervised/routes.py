@@ -35,7 +35,7 @@ async def info(request: FasttextRequest):
     return json(request, model_info, 200)
 
 
-@supervised_blueprint.route('vector', methods=['POST'])
+@supervised_blueprint.route('/vector', methods=['POST'])
 @timeit
 async def get_sentence_vector(request: FasttextRequest):
     """
