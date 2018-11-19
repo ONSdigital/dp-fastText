@@ -16,11 +16,31 @@ from dp_fasttext.api.request.fasttext_request import FasttextRequest
 supervised_blueprint = Blueprint('supervised', url_prefix='/supervised')
 
 
-@supervised_blueprint.route('/sentence/vector', methods=['POST'])
+@supervised_blueprint.route('/info', methods=['GET'])
+async def info(request: FasttextRequest):
+    """
+    Returns info about the supervised model
+    TODO - Add authentication
+    :param request:
+    :return:
+    """
+    app: FasttextServer = request.app
+    model: SupervisedModel = app.get_supervised_model()
+
+    model_info = {
+        "dimensions": model.get_dimension(),
+        "isQuantised": model.is_quantized()
+    }
+
+    return json(request, model_info, 200)
+
+
+@supervised_blueprint.route('/vector', methods=['POST'])
 @timeit
 async def get_sentence_vector(request: FasttextRequest):
     """
     Returns the vector for the input sentence
+    TODO - Add authentication
     :param request:
     :return:
     """
@@ -40,6 +60,39 @@ async def get_sentence_vector(request: FasttextRequest):
         "vector": vector.tolist()
     }
 
+    return json(request, response, 200)
+
+
+@supervised_blueprint.route('/vector/batch', methods=['POST'])
+@timeit
+async def batch_get_sentence_vector(request: FasttextRequest):
+    """
+    Batch process sentence vector requests
+    :param request:
+    :return:
+    """
+    app: FasttextServer = request.app
+    model: SupervisedModel = app.get_supervised_model()
+
+    try:
+        queries: dict = request.get_batch_query_strings()
+        logger.debug(request.request_id, "Got batch sentence vector request", extra={
+            "params": {
+                "queries": queries
+            }
+        })
+    except InvalidUsage as e:
+        logger.error(request.request_id, "Invalid request made to /supervised/sentence/vector/batch", exc_info=e)
+        return json(request, "Invalid request", e.status_code)
+
+    # Process
+    results: dict = model.batch_get_sentence_vector(queries)
+
+    response = {
+        "results": results
+    }
+
+    # Return
     return json(request, response, 200)
 
 

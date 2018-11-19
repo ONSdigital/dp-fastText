@@ -1,6 +1,7 @@
 """
 Defines custom Request object for this API
 """
+from typing import Dict
 from numpy import array, ndarray
 from sanic.exceptions import InvalidUsage, ServerError
 
@@ -20,7 +21,26 @@ class FasttextRequest(Request):
         if self.json is not None and "query" in self.json:
             return self.json.get("query")
 
-        raise InvalidUsage("No query specified")
+        message = "No query specified"
+        logger.error(self.request_id, message)
+        raise InvalidUsage(message)
+
+    def get_batch_query_strings(self) -> Dict[str, str]:
+        """
+        Returns a dictionary of _id to str for batch sentence vector requests
+        :return:
+        """
+        if self.json is not None and "queries" in self.json:
+            queries = self.json.get("queries")
+            if not isinstance(queries, dict):
+                message = "Must supply Dict[id, query]"
+                logger.error(self.request_id, message)
+                raise InvalidUsage(message)
+
+            return queries
+        message = "No query specified"
+        logger.error(self.request_id, message)
+        raise InvalidUsage(message)
 
     def get_query_vector(self) -> ndarray:
         """
