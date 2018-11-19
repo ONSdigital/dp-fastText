@@ -71,7 +71,7 @@ def decode_float_list(base64_string) -> np.ndarray:
     return np.frombuffer(decoded_bytes, dtype=np.dtype(float_8byte_big_endian))
 
 
-def encode_float_list(array: List[float]) -> str:
+def encode_float_list(array: np.ndarray) -> str:
     """
     Encodes a list of floating point numbers as a binary string
     :param array:
@@ -80,7 +80,7 @@ def encode_float_list(array: List[float]) -> str:
     # Encode from 8 byte floats (> = big-endian)
     float_8byte_big_endian = '>f8'
 
-    base64_str = base64.b64encode(np.array(array).astype(np.dtype(float_8byte_big_endian))).decode("utf-8")
+    base64_str = base64.b64encode(array.astype(np.dtype(float_8byte_big_endian))).decode("utf-8")
     return base64_str
 
 
