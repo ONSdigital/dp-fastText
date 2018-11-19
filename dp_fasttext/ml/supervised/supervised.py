@@ -48,13 +48,24 @@ class SupervisedModel(fastText.FastText._FastText):
 
         # Iterate over id map
         for _id in id_text_map:
-            vector: np.ndarray = self.get_sentence_vector(id_text_map.get(_id))
+            text = id_text_map.get(_id)
+            vector: np.ndarray = self.get_sentence_vector(text)
 
             # Encode
             encoded_vector: str = encode_float_list(list(vector.tolist()))
 
+            # Generate keywords
+            keywords, probabilities = self.predict(text, k=10, threshold=0.0)
+
+            keyword_prob_map = {}
+            for k, p in zip(keywords, probabilities):
+                keyword_prob_map[k] = p
+
             # Add to results
-            results[_id] = encoded_vector
+            results[_id] = {
+                "vector": encoded_vector,
+                "keywords": keyword_prob_map
+            }
 
         return results
 

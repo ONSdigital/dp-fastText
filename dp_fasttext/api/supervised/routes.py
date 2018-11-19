@@ -16,11 +16,32 @@ from dp_fasttext.api.request.fasttext_request import FasttextRequest
 supervised_blueprint = Blueprint('supervised', url_prefix='/supervised')
 
 
-@supervised_blueprint.route('/sentence/vector', methods=['POST'])
+@supervised_blueprint.route('/', methods=['GET'])
+@timeit
+async def info(request: FasttextRequest):
+    """
+    Returns info about the supervised model
+    TODO - Add authentication
+    :param request:
+    :return:
+    """
+    app: FasttextServer = request.app
+    model: SupervisedModel = app.get_supervised_model()
+
+    model_info = {
+        "dimensions": model.get_dimension(),
+        "isQuantised": model.is_quantized()
+    }
+
+    return json(request, model_info, 200)
+
+
+@supervised_blueprint.route('vector', methods=['POST'])
 @timeit
 async def get_sentence_vector(request: FasttextRequest):
     """
     Returns the vector for the input sentence
+    TODO - Add authentication
     :param request:
     :return:
     """
@@ -43,7 +64,7 @@ async def get_sentence_vector(request: FasttextRequest):
     return json(request, response, 200)
 
 
-@supervised_blueprint.route('/sentence/vector/batch', methods=['POST'])
+@supervised_blueprint.route('/vector/batch', methods=['POST'])
 @timeit
 async def batch_get_sentence_vector(request: FasttextRequest):
     """

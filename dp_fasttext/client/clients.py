@@ -12,7 +12,7 @@ class SupervisedClient(object):
         self.client = client
 
         self._predict_uri = "/supervised/predict"
-        self._sentence_vector_uri = "/supervised/sentence/vector"
+        self._sentence_vector_uri = "/supervised/vector"
 
     async def get_sentence_vector(self, query, **kwargs) -> ndarray:
         """
