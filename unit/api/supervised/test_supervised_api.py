@@ -18,7 +18,7 @@ class TestSupervisedApi(FastTextTestApp):
         }
 
         # Set the target
-        target = '/supervised/sentence/vector'
+        target = '/supervised/vector'
 
         # Assert 200 response
         request, response = self.post(target, 200, data=dumps(data))
@@ -43,7 +43,7 @@ class TestSupervisedApi(FastTextTestApp):
         data = {}
 
         # Set the target
-        target = '/supervised/sentence/vector'
+        target = '/supervised/vector'
 
         # Assert 200 response
         request, response = self.post(target, 400, data=dumps(data))

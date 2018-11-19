@@ -64,7 +64,7 @@ class SupervisedClientTestCase(TestCase, AsyncTestCase):
                 # Mock out _post
                 client.post = MagicMock(return_value=return_fn())
 
-                expected_uri = "/supervised/sentence/vector"
+                expected_uri = "/supervised/vector"
 
                 # Make the call
                 vector = await client.supervised.get_sentence_vector(query, headers=headers)
@@ -99,7 +99,7 @@ class SupervisedClientTestCase(TestCase, AsyncTestCase):
                 # Mock out _post
                 client.post = MagicMock(return_value=return_fn())
 
-                expected_uri = "/supervised/sentence/vector"
+                expected_uri = "/supervised/vector"
 
                 # Make the call and assert exception raised
                 with self.assertRaises(Exception) as context:
