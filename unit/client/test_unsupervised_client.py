@@ -1,8 +1,8 @@
 """
 Tests that the fasttext client properly parses valid/invalid response JSON
 """
-from numpy import array
 from uuid import uuid4
+from numpy import array
 from unittest import TestCase
 from unittest.mock import MagicMock
 
@@ -20,7 +20,7 @@ class UnsupervisedClientTestCase(TestCase, AsyncTestCase):
         :return:
         """
         # Build request data
-        test_vector = [1.0, 0.5, 0.0]
+        test_vector = array([1.0, 0.5, 0.0])
         test_vector_encoded = encode_float_list(test_vector)
         num_labels = 5
 
@@ -59,7 +59,7 @@ class UnsupervisedClientTestCase(TestCase, AsyncTestCase):
         :return:
         """
         # Build request data
-        test_vector = [1.0, 0.5, 0.0]
+        test_vector = array([1.0, 0.5, 0.0])
         test_vector_encoded = encode_float_list(test_vector)
         num_labels = 5
 
