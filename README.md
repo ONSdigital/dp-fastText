@@ -31,8 +31,7 @@ search, the latter requires a [plugin for vector scoring](https://github.com/sul
 
 There are two options for running the server:
 Use ```python manager.py``` to use the internal Sanic server, or  ```./run_gunicorn.sh``` to initialise as a 
-gunicorn server (supports multi-processing for multiple workers and threads per worker). This repository comes with a *test* [full word2vec embeddings model](ml/data/word2vec/ons_supervised.vec) and a 
-and [supervised model](unit/ml/test_data/supervised_models/ons_supervised.bin).
+gunicorn server (supports multi-processing for multiple workers and threads per worker). This repository comes with a *test* [word2vec embeddings model](ml/data/word2vec/ons_supervised.vec) and [supervised model](unit/ml/test_data/supervised_models/ons_supervised.bin).
 
 # Swagger
 
