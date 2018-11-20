@@ -5,4 +5,7 @@ WORKDIR /dp-fastText
 
 RUN make build
 
+ENV SUPERVISED_MODEL_FILENAME=supervised_models/ons_supervised.bin
+ENV UNSUPERVISED_MODEL_FILENAME=supervised_models/ons_supervised.vec
+
 CMD python manager.py

@@ -8,7 +8,7 @@ APP_CONFIG.title = "dp-fastText"
 
 ML_CONFIG = Section("ML Config")
 ML_CONFIG.supervised_model_filename = os.environ.get("SUPERVISED_MODEL_FILENAME",
-                                                     "./supervised_models/ons_supervised.bin")
+                                                     "./test_models/ons_supervised.bin")
 
 ML_CONFIG.unsupervised_model_filename = os.environ.get("UNSUPERVISED_MODEL_FILENAME",
-                                                       "./supervised_models/ons_supervised.vec")
+                                                       "./test_models/ons_supervised.vec")
