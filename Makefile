@@ -10,9 +10,9 @@ debug: build run
 
 .PHONY:
 requirements:
+	mkdir -p supervised_models
 	pip install -r requirements.txt
 	python scripts/download_nltk_stopwords.py
-	mkdir -p supervised_models
 
 .PHONY:
 fastText:
@@ -26,7 +26,7 @@ version:
 
 .PHONY:
 model: fastText
-	python build_model.py corpa/ons_labelled.txt supervised_models/ons_supervised.bin 10
+	python build_model.py corpa/ons_labelled.txt supervised_models/ons_supervised.bin 300
 	scripts/bin_to_vec.py supervised_models/ons_supervised.bin > supervised_models/ons_supervised.vec
 
 .PHONY:
