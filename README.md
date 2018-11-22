@@ -25,7 +25,7 @@ a [virtual environment](https://docs.python.org/3/library/venv.html).
 Alternatively (preferred approach), you can use the supplied Dockerfile to run in a container. When running with 
 conceptual search and user recommendation enabled, the simplest approach is to use ```docker-compose``` with the
 ```docker-compose.yml``` provided to bring up dedicated instances of mongoDB and Elasticsearch. Note that for conceptual
-search, the latter requires a [plugin for vector scoring](https://github.com/sully90/fast-elasticsearch-vector-scoring).  
+search, the latter requires a [plugin for vector scoring](https://github.com/ONSdigital/fast-elasticsearch-vector-scoring).  
 
 # Running
 
