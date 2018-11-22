@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
 pushd dp-fasttext
-  make build acceptance
+  make requirements
   cp -r * ../build/
 popd
