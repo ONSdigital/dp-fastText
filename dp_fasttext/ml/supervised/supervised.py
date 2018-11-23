@@ -52,7 +52,7 @@ class SupervisedModel(fastText.FastText._FastText):
             vector: np.ndarray = self.get_sentence_vector(text)
 
             # Encode
-            encoded_vector: str = encode_float_list(list(vector.tolist()))
+            encoded_vector: str = encode_float_list(vector)
 
             # Generate keywords
             keywords, probabilities = self.predict(text, k=10, threshold=0.0)
