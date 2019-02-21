@@ -16,8 +16,7 @@ job "dp-fasttext" {
 
     constraint {
       attribute = "${node.class}"
-      operator  = "regexp"
-      value     = "web.*"
+      value     = "web"
     }
 
     task "dp-fasttext" {
@@ -80,8 +79,7 @@ job "dp-fasttext" {
 
     constraint {
       attribute = "${node.class}"
-      operator  = "regexp"
-      value     = "publishing.*"
+      value     = "publishing"
     }
 
     task "dp-fasttext" {
