@@ -1,1 +1,2 @@
-supervised_models/*.bin
+supervised_models/*
+backup_models/

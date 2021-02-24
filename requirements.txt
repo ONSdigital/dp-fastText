@@ -1,3 +1,6 @@
+multidict==4.4.0
+aiohttp==3.4.4
+cchardet==2.1.4
 tqdm==4.23.4
 gensim==3.4.0
 elasticsearch==6.3.0
@@ -11,6 +14,7 @@ typing==3.6.2
 beautifulsoup4==4.6.3
 GitPython==2.1.11
 python_json_logger==0.1.9
+inflect==1.0.0
 git+https://github.com/ONSdigital/dp4py-config.git@master#egg=dp4py_config
 git+https://github.com/ONSdigital/dp4py-logging.git@master#egg=dp4py_logging
 git+https://github.com/ONSdigital/dp4py-sanic.git@master#egg=dp4py_sanic

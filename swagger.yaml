@@ -1,0 +1,117 @@
+swagger: "2.0"
+info:
+  description: "API to expose custom fastText models"
+  version: "1.0.0"
+  title: "dp-fasttext"
+  license:
+    name: "Open Government Licence v3.0"
+    url: "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+schemes:
+  - "http"
+host: localhost:5100
+tags:
+  - name: "supervised"
+  - name: "unsupervised"
+  - name: "healthcheck"
+
+paths:
+  /supervised/predict:
+    post:
+      tags:
+        - supervised
+      summary: "Predict labels for input query text"
+      description: "Predict labels for input query text"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: query
+          name: query
+          required: true
+          description: "The query text to make predictions for"
+          type: string
+        - in: query
+          name: num_labels
+          required: false
+          description: "The number of labels to attempt to predict"
+          type: integer
+        - in: query
+          name: threshold
+          required: false
+          description: "Probability threshold for a label to be returned"
+          type: number
+      responses:
+        200:
+          description: OK
+        400:
+          description: Query string not specified
+        500:
+          description: Internal server error
+
+  /supervised/sentence/vector:
+    post:
+      tags:
+        - supervised
+      summary: "Get the embedding vector for the input sentence"
+      description: "Get the embedding vector for the input sentence"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: query
+          name: query
+          required: true
+          description: "The query text to make predictions for"
+          type: string
+      responses:
+        200:
+          description: OK
+        400:
+          description: Query string not specified
+        500:
+          description: Internal server error
+
+  /unsupervised/similar/vector:
+    post:
+      tags:
+       - unsupervised
+      summary: "Returns a list of words similar to the input vector"
+      description: "Returns a list of words similar to the input vector"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: query
+          name: encoded_vector
+          required: true
+          description: "The string encoded vector"
+          type: string
+        - in: query
+          name: num_labels
+          required: false
+          description: "The maximum number of labels to generate"
+          type: integer
+      responses:
+        200:
+          description: OK
+        400:
+          description: Query string not specified
+        500:
+          description: Internal server error
+
+  /healthcheck:
+    get:
+      tags:
+        - healthcheck
+      summary: "Healthcheck API"
+      description: "Empty healthcheck API to test availability of the app"
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+        500:
+          description: Internal server error

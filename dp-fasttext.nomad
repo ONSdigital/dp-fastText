@@ -6,7 +6,7 @@ job "dp-fasttext" {
   update {
     stagger          = "60s"
     min_healthy_time = "30s"
-    healthy_deadline = "2m"
+    healthy_deadline = "5m"
     max_parallel     = 1
     auto_revert      = true
   }
@@ -16,8 +16,7 @@ job "dp-fasttext" {
 
     constraint {
       attribute = "${node.class}"
-      operator  = "regexp"
-      value     = "web.*"
+      value     = "web"
     }
 
     task "dp-fasttext" {
@@ -38,7 +37,7 @@ job "dp-fasttext" {
         image = "{{ECR_URL}}:concourse-{{REVISION}}"
 
         port_map {
-          http = 5000
+          http = 5100
         }
       }
 
@@ -80,8 +79,7 @@ job "dp-fasttext" {
 
     constraint {
       attribute = "${node.class}"
-      operator  = "regexp"
-      value     = "publishing.*"
+      value     = "publishing"
     }
 
     task "dp-fasttext" {
@@ -102,7 +100,7 @@ job "dp-fasttext" {
         image = "{{ECR_URL}}:concourse-{{REVISION}}"
 
         port_map {
-          http = 5000
+          http = 5100
         }
       }
 

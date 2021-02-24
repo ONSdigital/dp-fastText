@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
 pushd dp-fasttext
-  make build
+  make requirements
   cp -r * ../build/
 popd
